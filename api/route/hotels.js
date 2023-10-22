@@ -39,14 +39,35 @@ router.put("/:id", async (req, res) => {
   });
 
 // DELTE
+router.delete("/:id", async (req, res) => {
+  try {
+      await Hotel.findByIdAndDelete(req.params.id);
+    res.status(200).json('Hotel Deleted');
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+
+
 // GET
-router.get("/", async (req, res) => {
+router.get("/:id", async (req, res) => {
     try {
-      const hotels = await Hotel.find(); 
-      res.status(200).json(hotels);
+      const hotels = await Hotel.findById(req.params.id); 
+       res.status(200).json(hotels)
     } catch (err) {
       res.status(500).json({ error: err.message });
     }
   });
+
+
 // GET ALL
 
+router.get("/", async (req, res) => {
+    try {
+      const hotels = await Hotel.find(); 
+       res.status(200).json(hotels)
+    } catch (err) {
+      res.status(500).json({ error: err.message });
+    }
+  });
