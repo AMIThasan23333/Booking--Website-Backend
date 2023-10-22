@@ -1,15 +1,15 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-
+import authroutes from './api/route/auth.js'
+// import usersroutes from './api/route/users.js'
+import hotelsroutes from './api/route/hotels.js'
+// import roomsroutes from './api/route/rooms.js'
 dotenv.config();
 
 const app = express();
-// mongodb connection 
-// Booking-Backend
-// 5FIkGmWmoaJSVQOF
-// mongodb+srv
 
+app.use(express.json())
 
 async function main() {
   try {
@@ -19,9 +19,10 @@ async function main() {
       // Other connection options
     });
     console.log('Connected to MongoDB');
-  } catch (error) {
-    console.error('Error connecting to MongoDB:', error);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
+  
 }
 
 main();
@@ -35,6 +36,21 @@ mongoose.connection.on("disconnected", () => {
 mongoose.connection.on("connected", () => {
     console.log("MongoDb Connected");
 })
+
+
+// middleware 
+app.use("/api/auth", authroutes)
+// app.use("/api/users", authroutes)
+app.use("/api/hotels", hotelsroutes)
+// app.use("/api/rooms", authroutes)
+
+
+
+
+
+
+
+
 
 app.listen(8800, () => {
     console.log("connectd");
