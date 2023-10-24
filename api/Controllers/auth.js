@@ -22,3 +22,28 @@ export const register = async (req, res, next) => {
       next(err);
     }
   };
+
+
+
+  export const login= async (req, res, next) => {
+    
+  
+    try {
+     
+      const user = await User.findOne({username:req.body.username}) 
+
+      if(!user) return next("user not found")
+      res.status(201).json({ message: "User " }); // Corrected the response format
+           
+      const isPasswordCorrect = await bcrypt.compare(req.body.password, user.password)
+
+      if(!isPasswordCorrect) return    res.status(201).json({ message: "wrong password " });
+
+
+    const {password , isAdmin, ...other} = user._doc
+
+      res.status(200).json({other})
+    } catch (err) {
+      next(err);
+    }
+  };
