@@ -20,7 +20,7 @@ async function main() {
     });
     console.log('Connected to MongoDB');
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error('Error connecting to MongoDB:', err);
   }
   
 }
@@ -42,7 +42,7 @@ mongoose.connection.on("connected", () => {
 app.use("/api/auth", authroutes)
 // app.use("/api/users", authroutes)
 app.use("/api/hotels", hotelsroutes)
-// app.use("/api/rooms", authroutes)
+// app.use("/api/rooms", authrosutes)
 
 // middleware error
 app.use((err,req,res,next) => {
