@@ -33,7 +33,6 @@ export const createRoom = async (req,res,next) => {
 
 }
 
-
 export const updateHotel = async(req,res, next) => {
     try {
         const upDatedHotel = await Hotel.findByIdAndUpdate(req.params.id, { $set : req.body }, {new : true });
@@ -57,7 +56,6 @@ export const deleteHotel = async(req,res, next) => {
 
 
 }
-
 
 export const getHotel = async(req,res, next) => {
 

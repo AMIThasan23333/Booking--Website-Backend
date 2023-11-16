@@ -5,10 +5,11 @@ import authroutes from './api/route/auth.js'
 // import usersroutes from './api/route/users.js'
 import hotelsroutes from './api/route/hotels.js'
 // import roomsroutes from './api/route/rooms.js'
+import cookieParser from 'cookie-parser';
 dotenv.config();
 
 const app = express();
-
+app.use(cookieParser());
 app.use(express.json())
 
 async function main() {
@@ -26,6 +27,10 @@ async function main() {
 }
 
 main();
+
+app.get("/", (req, res) => {
+  res.send("Connected");
+});
 
 
 mongoose.connection.on("disconnected", () => {

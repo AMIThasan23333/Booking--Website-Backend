@@ -7,6 +7,7 @@ export const updateUser = async(req,res, next) => {
         const upDatedUser = await User.findByIdAndUpdate(req.params.id, { $set : req.body }, {new : true });
         res.status(200).json(upDatedUser);
       } 
+      
     catch (err) {
       next(err)
       }
