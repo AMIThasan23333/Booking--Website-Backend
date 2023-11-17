@@ -4,23 +4,24 @@ import { deleteUser, getUser, getUsers, updateUser } from "../Controllers/user.j
 import { verifyAdmin, verifyUser } from "../Utils/VerifyToken.js";
 
 const router = express.Router();
+router.use(express.json());
 
 router.get("/", (req,res) => {
     res.send("Hello , this is api endpoint ")
 })
 
 
-router.get("/checkauthentication", verifyToken, (req,res,next)=>{
-  res.send("hello user, you are logged in")
-})
+// router.get("/checkauthentication", verifyToken, (req,res,next)=>{
+//   res.send("hello user, you are logged in")
+// })
 
-router.get("/checkuser/:id", verifyUser, (req,res,next)=>{
-  res.send("hello user, you are logged in and you can delete your account")
-})
+// router.get("/checkuser/:id", verifyUser, (req,res,next)=>{
+//   res.send("hello user, you are logged in and you can delete your account")
+// })
 
-router.get("/checkadmin/:id", verifyAdmin, (req,res,next)=>{
-  res.send("hello admin, you are logged in and you can delete all accounts")
-})
+// router.get("/checkadmin/:id", verifyAdmin, (req,res,next)=>{
+//   res.send("hello admin, you are logged in and you can delete all accounts")
+// })
 
 
 
@@ -33,7 +34,7 @@ router.put("/:id", verifyUser ,updateUser);
 
 
 // DELeTE User
-router.delete("/:id", verifyUser.deleteUser);
+router.delete("/:id", verifyUser, deleteUser);
 
 
 

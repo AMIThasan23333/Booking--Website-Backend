@@ -2,10 +2,11 @@ import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import authroutes from './api/route/auth.js'
-// import usersroutes from './api/route/users.js'
+import usersroutes from './api/route/users.js'
 import hotelsroutes from './api/route/hotels.js'
-// import roomsroutes from './api/route/rooms.js'
+import roomsroutes from './api/route/rooms.js'
 import cookieParser from 'cookie-parser';
+
 dotenv.config();
 
 const app = express();
@@ -42,12 +43,11 @@ mongoose.connection.on("connected", () => {
     console.log("MongoDb Connected");
 })
 
+app.use("/api/auth", authroutes);
+app.use("/api/users", usersroutes);
+app.use("/api/hotels", hotelsroutes);
+app.use("/api/rooms", roomsroutes);
 
-// middleware 
-app.use("/api/auth", authroutes)
-// app.use("/api/users", authroutes)
-app.use("/api/hotels", hotelsroutes)
-// app.use("/api/rooms", authrosutes)
 
 // middleware error
 app.use((err,req,res,next) => {
