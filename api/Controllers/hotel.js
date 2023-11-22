@@ -10,8 +10,8 @@ export const createHotel = async(req,res, next) => {
         res.status(200).json(savedHotel)
     
     }
-    catch (err) {
-       next(err)
+    catch (error) {
+       next(error)
       }
 
 
@@ -22,8 +22,8 @@ export const updateHotel = async(req,res, next) => {
         const upDatedHotel = await Hotel.findByIdAndUpdate(req.params.id, { $set : req.body }, {new : true });
         res.status(200).json(upDatedHotel);
       } 
-    catch (err) {
-      next(err)
+    catch (error) {
+      next(error)
       }
 
 
@@ -34,8 +34,8 @@ export const deleteHotel = async(req,res, next) => {
         await Hotel.findByIdAndDelete(req.params.id);
       res.status(200).json('Hotel Deleted');
     }
-    catch (err) {
-       next(err)
+    catch (error) {
+       next(error)
       }
 
 
@@ -43,59 +43,52 @@ export const deleteHotel = async(req,res, next) => {
 
 
 export const getHotel = async(req,res, next) => {
-
     try {
         const hotels = await Hotel.findById(req.params.id); 
          res.status(200).json(hotels)
       } 
-    catch (err) {
-        next(err)
+    catch (error) {
+        next(error)
       }
-
-
 }
 
 export const getHotels = async(req,res, next) => {
-
-     
     const { min,max, ...others} =req.query;
-
-
-
-
-
     try {
-
-        const hotels = await Hotel.find({
+       const hotels = await Hotel.find({
           ...others,
           cheapestPrice : {$gt : min | 1, $lt: max || 999},
         }).limit(req.query.limit);
-
          res.status(200).json(hotels)
       } 
-    catch (err) {
-     next(err)
+    catch (error) {
+     next(error)
       } 
 }
 
 
-export const countByCity = async(req,res, next) => {
-  // making an array of citites
+export const countByCity = async (req, res, next) => {
+  // Making an array of cities from the query parameter
   const cities = req.query.cities.split(",");
 
-
   try {
+    
+    // Using Promise.all to asynchronously count hotels for each city
+    const list = await Promise.all(
+      cities.map(async (city) => {
+        // Count the number of hotels in the specified city
+        const count = await Hotel.countDocuments({ city: city });
+        return { city, count };
+      })
+    );
 
-      const list = await Promise.all(cities.map(city => {
-         return Hotel.countDocuments({city :city})
-      })); 
-       res.status(200).json(list)
-
-    } 
-  catch (err) {
-   next(err)
-    }
-}
+    // Responding with the list of cities and their respective counts
+    res.status(200).json(list);
+  } catch (error) {
+    // Handling errors by passing them to the next middleware
+    next(error);
+  }
+};
 
 
 export const countByType = async (req, res, next) => {
@@ -106,7 +99,6 @@ export const countByType = async (req, res, next) => {
     const villaCount = await Hotel.countDocuments({ type: "villa" });
     const cabinCount = await Hotel.countDocuments({ type: "cabin" });
 
-
     res.status(200).json([
       { type: "hotel", count: hotelCount },
       { type: "apartments", count: apartmentCount },
@@ -114,9 +106,8 @@ export const countByType = async (req, res, next) => {
       { type: "villas", count: villaCount },
       { type: "cabins", count: cabinCount },
     ]);
-    
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -136,6 +127,6 @@ export const getHotelRooms = async (req,res,next) => {
     )
     res.status(200).json(list)
   } catch (error) {
-    next(err)
+    next(error)
   }
 }

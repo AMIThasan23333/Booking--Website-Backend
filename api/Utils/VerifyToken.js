@@ -4,7 +4,6 @@ import jwt from "jsonwebtoken";
 import { createError } from './CreateError.js';
 
 
-
 export const verifyToken = (req, res, next) => {
   const token = req.cookies.access_token;
   if (!token) {
@@ -12,7 +11,6 @@ export const verifyToken = (req, res, next) => {
   }
 
 
-  
   jwt.verify(token, process.env.JWT, (err, user) => {
     if (err) return next(createError(403, "Token is not valid!"));
     req.user = user;
@@ -31,6 +29,7 @@ export const verifyUser = (req, res, next)=> {
         }
     })
 }
+
 
 
 export const verifyAdmin =  (req, res, next)=> {
