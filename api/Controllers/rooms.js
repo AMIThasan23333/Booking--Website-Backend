@@ -69,6 +69,7 @@ export const deleteRoom = async (req, res, next) => {
     next(error);
   }
 };
+
 export const getRoom = async (req, res, next) => {
   try {
     const room = await Room.findById(req.params.id);
@@ -77,6 +78,8 @@ export const getRoom = async (req, res, next) => {
     next(error);
   }
 };
+
+
 export const getRooms = async (req, res, next) => {
   try {
     const rooms = await Room.find();
